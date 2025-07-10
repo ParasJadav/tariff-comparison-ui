@@ -37,8 +37,8 @@ jobs:
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
-          name: angular-app
-          path: ./dist/<your-angular-project-name>
+          name: tariff-comparison-app
+          path: ./dist/tariff-comparison
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: angular-app
+          name: tariff-comparison-app
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -63,6 +63,6 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: '<your-app-service-name>'
+          app-name: 'tariff-comparison-ui'
           slot-name: 'Production'
           package: .
