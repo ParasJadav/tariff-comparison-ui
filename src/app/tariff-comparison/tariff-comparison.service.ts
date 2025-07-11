@@ -3,6 +3,7 @@ import { TariffComparison } from '../models/tariff-comparison.model';
 import { TariffComparisonRequest } from '../models/tariff-comparison.request.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { TariffComparisonResponse } from '../models/tariff-comparison.response.model';
 
 
@@ -12,14 +13,17 @@ import { TariffComparisonResponse } from '../models/tariff-comparison.response.m
 export class TariffComparisonService {
 
   private apiUrl = "https://tariffcomparisonapp.azurewebsites.net"
-  private tariffComparison: TariffComparison[] = [];
-  private tariffComparisonRequest: TariffComparisonRequest[] = [];
   constructor(private http: HttpClient) {
     
   }
 
-  getAllTariffs(): Observable<{ rows:TariffComparison[]}> {
-    return this.http.get<{ rows:TariffComparison[]}>(`${this.apiUrl}/api/readtariffs`);
+  getAllTariffs(): Observable<{ rows: TariffComparison[] }> {
+    return this.http.get<{ rows: TariffComparison[] }>(`${this.apiUrl}/api/readtariffs`).pipe(
+      tap(response => {
+        // Store the fetched data in localStorage
+        localStorage.setItem('tariffs', JSON.stringify(response.rows));
+      })
+    );
   }
   
   getFilteredTariffs(tariffComparisonRequest: TariffComparisonRequest): Observable<{ rows:TariffComparisonResponse[]}> {

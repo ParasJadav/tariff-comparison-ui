@@ -47,11 +47,18 @@ export class HomeComponent {
     })
   
 
-    this.tariffComparisonService.getAllTariffs().subscribe(tariffs => {
-      this.tariffs = tariffs.rows;
-      const typesSet = new Set(this.tariffs.map(p => p.type));
-      this.uniqueTypes = ['0', ...Array.from(typesSet).filter(t => t !== '0')];
-    });
+    const storedTariffs = localStorage.getItem('tariffs');
+    if (storedTariffs) {
+      this.tariffs = JSON.parse(storedTariffs);
+      const typesSet = new Set(this.tariffs.map(p => p.type));
+      this.uniqueTypes = ['0', ...Array.from(typesSet).filter(t => t !== '0')];
+    } else {
+      this.tariffComparisonService.getAllTariffs().subscribe(tariffs => {
+        this.tariffs = tariffs.rows;
+        const typesSet = new Set(this.tariffs.map(p => p.type));
+        this.uniqueTypes = ['0', ...Array.from(typesSet).filter(t => t !== '0')];
+      });
+    }
   }
 
   onSubmit() {
