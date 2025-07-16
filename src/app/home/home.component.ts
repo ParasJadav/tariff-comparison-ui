@@ -15,6 +15,7 @@ export class HomeComponent {
   tariffs: TariffComparison[] = [];
   tariffsResponse: TariffComparisonResponse[] = [];
   submitted = false;
+  loading = true;
   uniqueTypes: string[] = [];
 
   typeLabels: { [key: string]: string } = {
@@ -68,6 +69,7 @@ export class HomeComponent {
       let tariff: TariffComparisonRequest = this.tariffComparisonForm.value;
       
       this.tariffComparisonService.getFilteredTariffs(tariff).subscribe(tariffs => {
+        this.loading = false;
         this.tariffsResponse = tariffs.rows;
       });
       console.log('Tariff Plans received:', this.tariffs);

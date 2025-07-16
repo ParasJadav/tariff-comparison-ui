@@ -20,7 +20,6 @@ export class TariffComparisonService {
   getAllTariffs(): Observable<{ rows: TariffComparison[] }> {
     return this.http.get<{ rows: TariffComparison[] }>(`${this.apiUrl}/api/readtariffs`).pipe(
       tap(response => {
-        // Store the fetched data in localStorage
         localStorage.setItem('tariffs', JSON.stringify(response.rows));
       })
     );
